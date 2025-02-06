@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Analysis</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #output { margin-top: 20px; white-space: pre-line; }
+    </style>
+</head>
+<body>
+    <h1>College Statistics Helper</h1>
+    <input type="file" id="fileInput">
+    <button onclick="loadFile()">Load Data</button>
+    <br><br>
+    <button onclick="displayData()">See Data Values</button>
+    <button onclick="displayStats()">See Data Information</button>
+    <button onclick="displayStdDev()">Standard Deviations</button>
+    <button onclick="findZScore()">Get Z-Score</button>
+    <br><br>
+    <div id="output"></div>
+
+    <script>
+        let data = [];
+
+        function loadFile() {
+            const fileInput = document.getElementById('fileInput').files[0];
+            if (!fileInput) {
+                alert("Please select a file.");
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                data = event.target.result.split(/\s+/).map(Number).filter(n => !isNaN(n));
+                data.sort((a, b) => a - b);
+                alert("Data loaded successfully!");
+            };
+            reader.readAsText(fileInput);
+        }
+
+        function displayData() {
+            document.getElementById("output").innerText = "Data Values: " + data.join(", ");
+        }
+
+        function findMin() { return Math.min(...data); }
+        function findMax() { return Math.max(...data); }
+        function findRange() { return findMax() - findMin(); }
+        function findAverage() { return data.reduce((a, b) => a + b, 0) / data.length; }
+
+        function findMode() {
+            let freq = {}, maxFreq = 0, modes = [];
+            data.forEach(num => freq[num] = (freq[num] || 0) + 1);
+            maxFreq = Math.max(...Object.values(freq));
+            for (let num in freq) if (freq[num] === maxFreq) modes.push(num);
+            return maxFreq > 1 ? `Mode: ${modes.join(", ")} (repeated ${maxFreq} times)` : "Mode: none";
+        }
+
+        function displayStats() {
+            let output = `Min: ${findMin()}\nMax: ${findMax()}\nRange: ${findRange()}\n${findMode()}\nAverage: ${findAverage().toFixed(2)}`;
+            document.getElementById("output").innerText = output;
+        }
+
+        function populationStdDev() {
+            let mean = findAverage();
+            return Math.sqrt(data.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / data.length);
+        }
+
+        function sampleStdDev() {
+            let mean = findAverage();
+            return Math.sqrt(data.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / (data.length - 1));
+        }
+
+        function displayStdDev() {
+            let output = `Population Std Dev: ${populationStdDev().toFixed(2)}\nSample Std Dev: ${sampleStdDev().toFixed(2)}`;
+            document.getElementById("output").innerText = output;
+        }
+
+        function findZScore() {
+            let num = parseFloat(prompt("Enter a number from the dataset:"));
+            if (!data.includes(num)) {
+                alert("Number not in dataset.");
+                return;
+            }
+            let zScore = (num - findAverage()) / populationStdDev();
+            document.getElementById("output").innerText = `Z-Score of ${num}: ${zScore.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
