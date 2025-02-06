@@ -44,7 +44,7 @@ How to Compile and Run:
         ./a.out
         
     HTML:
-        Download helper.html, open the file in a browser of you choosing and it will open a menu where you can input your data file.
+        Download helper.html, open the file in a browser of you choosing.
 
 Menu Options:
 
