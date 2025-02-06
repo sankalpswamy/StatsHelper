@@ -36,11 +36,11 @@ How to Compile and Run:
 
     Compile the code: If you're using GCC, use the following command to compile the program:
 
-g++ -o data_analysis data_analysis.cpp
+g++ helper.cpp
 
 Run the executable: Once compiled, you can run the program with:
 
-    ./data_analysis
+    ./a.out
 
 Menu Options:
 
