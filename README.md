@@ -1,7 +1,7 @@
 # StatsHelper
 Program that can help calculate many basic operationns used in for Math 242 at CSUSM
 
-This program is designed to help students in Math242 (Statistics) at California State University, San Marcos. This C++ program provides basic data analysis operations for a set of numbers read from an input file. The program allows the user to:
+This program is designed to help students in Math242 (Statistics) at California State University, San Marcos. This html program provides basic data analysis operations for a set of numbers read from an input file. The program allows the user to:
 
     View the raw data.
     Calculate the minimum, maximum, range, and average.
@@ -30,17 +30,21 @@ This program requires the C++ Standard Library, including:
 
 How to Compile and Run:
 
-    Make sure you have a C++ compiler installed (e.g., GCC or MinGW).
+    C++:
+        Make sure you have a C++ compiler installed (e.g., GCC or MinGW).
 
-    Create a file named data.txt in the same directory where the program will be compiled. This file should contain a set of integers (space-separated or newline-separated), which the program will read and process.
+        Create a file named data.txt in the same directory where the program will be compiled. This file should contain a set of integers (space-separated or newline-separated), which the program will read and process.
 
-    Compile the code: If you're using GCC, use the following command to compile the program:
+        Compile the code: If you're using GCC, use the following command to compile the program:
 
-g++ helper.cpp
+    g++ helper.cpp
 
-Run the executable: Once compiled, you can run the program with:
+    Run the executable: Once compiled, you can run the program with:
 
-    ./a.out
+        ./a.out
+        
+    HTML:
+        Download helper.html, open the file in a browser of you choosing and it will open a menu where you can input your data file.
 
 Menu Options:
 
