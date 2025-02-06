@@ -11,18 +11,36 @@
 </head>
 <body>
     <h1>College Statistics Helper</h1>
-    <input type="file" id="fileInput">
-    <button onclick="loadFile()">Load Data</button>
+
     <br><br>
+
+    <input type="file" id="fileInput">
+    <button onclick="loadFile()">Load from file</button>
+    
+    <br><br>
+    
+    <input type="text" id="manualInput" placeholder="Enter numbers separated by spaces" rows="4" style="width: 20%;"></textarea>
+    <button onclick="loadFromInput()">Load from Input</button>
+    
+    <br><br><br><br>
+    
     <button onclick="displayData()">See Data Values</button>
     <button onclick="displayStats()">See Data Information</button>
     <button onclick="displayStdDev()">Standard Deviations</button>
     <button onclick="findZScore()">Get Z-Score</button>
+    
     <br><br>
+    
     <div id="output"></div>
 
     <script>
         let data = [];
+
+        function processData(input) {
+            data = input.split(/\s+/).map(Number).filter(n => !isNaN(n));
+            data.sort((a, b) => a - b);
+            alert("Data loaded successfully!");
+        }
 
         function loadFile() {
             const fileInput = document.getElementById('fileInput').files[0];
@@ -33,11 +51,18 @@
             
             const reader = new FileReader();
             reader.onload = function(event) {
-                data = event.target.result.split(/\s+/).map(Number).filter(n => !isNaN(n));
-                data.sort((a, b) => a - b);
-                alert("Data loaded successfully!");
+                processData(event.target.result);
             };
             reader.readAsText(fileInput);
+        }
+
+        function loadFromInput() {
+            const inputText = document.getElementById('manualInput').value.trim();
+            if (!inputText) {
+                alert("Please enter data.");
+                return;
+            }
+            processData(inputText);
         }
 
         function displayData() {
