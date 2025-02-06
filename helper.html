@@ -3,14 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistical Analysis</title>
+    <title>Stats Helper</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; }
         #output { margin-top: 20px; white-space: pre-line; }
+
+        .top-left-text {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: black;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
-    <h1>College Statistics Helper</h1>
+    <div class="top-left-text">Sankalp Swamy</div>
+    <h1 style="font-size: 48px; color: blue; text-decoration: underline;">College Statistics Helper
+    <h1 style="font-size: 20px; color: red;">Designed for MATH242 at CSUSM</h1>
 
     <br><br>
 
@@ -19,7 +32,7 @@
     
     <br><br>
     
-    <input type="text" id="manualInput" placeholder="Enter numbers separated by spaces" rows="4" style="width: 20%;"></textarea>
+    <textarea id="manualInput" placeholder="Enter numbers separated by spaces" rows="1" style="width: 20%;"></textarea>
     <button onclick="loadFromInput()">Load from Input</button>
     
     <br><br><br><br>
