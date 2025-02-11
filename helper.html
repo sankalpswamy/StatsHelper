@@ -50,7 +50,6 @@
         <button onclick="displayStats()">See Data Information</button>
         <button onclick="displayStdDev()">Standard Deviations</button>
         <button onclick="findZScore()">Get Z-Score</button>
-        <button onclick="displayQuartiles()">Show Quartiles</button>
 
         <br><br>
 
@@ -95,6 +94,54 @@
                 data = input.split(/\s+/).map(Number).filter(n => !isNaN(n));
                 data.sort((a, b) => a - b);
                 alert("Data loaded successfully!");
+
+                let { Q1, Q2, Q3 } = findQuartiles();
+                let IQR = Q3 - Q1;
+                let lowerBound = Q1 - 1.5 * IQR;
+                let upperBound = Q3 + 1.5 * IQR;
+                let m = findAverage();
+
+                let outliers = data.filter(num => num < lowerBound || num > upperBound);
+
+                let canvas = document.getElementById("boxPlotCanvas");
+                canvas.style.width = "10px";
+                canvas.style.height = "1px";
+
+                let boxPlotData = {
+                    labels: ['Dataset'],
+                    datasets: [{
+                        label: 'Box Plot',
+                        data: [{
+                            min: Math.min(...data),
+                            q1: Q1,
+                            median: Q2,
+                            mean: m,
+                            q3: Q3,
+                            max: Math.max(...data),
+                            outliers: outliers
+                        }],
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'blue',
+                        borderWidth: 2
+                    }]
+                };
+
+                if (window.boxPlotChart) {
+                    window.boxPlotChart.destroy();
+                }
+
+                let ctx = document.getElementById("boxPlotCanvas").getContext("2d");
+                window.boxPlotChart = new Chart(ctx, {
+                    type: 'boxplot',
+                    data: boxPlotData,
+                    options: {
+                        responsive: true, 
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        }
+                    }
+                });
             }
 
             function loadFile() {
@@ -187,63 +234,6 @@
 
                 return { Q1, Q2, Q3 };
             }
-
-            function displayQuartiles() {
-                let { Q1, Q2, Q3 } = findQuartiles();
-                let IQR = Q3 - Q1;
-                let lowerBound = Q1 - 1.5 * IQR;
-                let upperBound = Q3 + 1.5 * IQR;
-                let m = findAverage();
-
-                let outliers = data.filter(num => num < lowerBound || num > upperBound);
-
-                let output = `Q1 (25th percentile): ${Q1}\nQ2 (50th Percentile): ${Q2}\nQ3 (75th percentile): ${Q3}\nInterquartile Range (IQR): ${IQR}\n`;
-                output += outliers.length > 0 ? `\nOutliers: ${outliers.join(", ")}` : "\nNo outliers detected.";
-
-                document.getElementById("output").innerText = output;
-
-                let canvas = document.getElementById("boxPlotCanvas");
-                canvas.style.width = "10px";
-                canvas.style.height = "1px";
-
-                let boxPlotData = {
-                    labels: ['Dataset'],
-                    datasets: [{
-                        label: 'Box Plot',
-                        data: [{
-                            min: Math.min(...data),
-                            q1: Q1,
-                            median: Q2,
-                            mean: m,
-                            q3: Q3,
-                            max: Math.max(...data),
-                            outliers: outliers
-                        }],
-                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                        borderColor: 'blue',
-                        borderWidth: 2
-                    }]
-                };
-
-                if (window.boxPlotChart) {
-                    window.boxPlotChart.destroy();
-                }
-
-                let ctx = document.getElementById("boxPlotCanvas").getContext("2d");
-                window.boxPlotChart = new Chart(ctx, {
-                    type: 'boxplot',
-                    data: boxPlotData,
-                    options: {
-                        responsive: true, 
-                        indexAxis: 'y',
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
-            }
-
-
 
         </script>
 </body>
