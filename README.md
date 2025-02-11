@@ -30,11 +30,6 @@ This tool was designed specifically for **MATH242 at CSUSM** and is useful for s
 - A **box plot** is automatically generated after data is loaded.
 - Hover over the box plot to see **quartile values (Q1, Median, Q3)**, as well as **min, max, and outliers**.
 
-## Important Formulas
-- **Population Standard Deviation**: \( \sigma = \sqrt{\frac{\sum (x_k - \mu)^2}{N}} \)
-- **Sample Standard Deviation**: \( s = \sqrt{\frac{\sum (x_k - \bar{x})^2}{n - 1}} \)
-- **Z-Score**: \( Z = \frac{X - \mu}{\sigma} \)
-
 ## Dependencies
 This tool uses **Chart.js** and **chartjs-chart-boxplot** for visualization:
 - [Chart.js](https://www.chartjs.org/)
