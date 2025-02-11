@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats Helper</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #output {
+            margin-top: 20px;
+            white-space: pre-line;
+        }
+
+        .top-left-text {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: black;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-left-text">Sankalp Swamy</div>
+    <h1 style="font-size: 48px; color: blue; text-decoration: underline;">College Statistics Helper
+        <h1 style="font-size: 20px; color: red;">Designed for MATH242 at CSUSM</h1>
+
+        <br><br>
+
+        <input type="file" id="fileInput">
+        <button onclick="loadFile()">Load from file</button>
+
+        <br><br>
+
+        <textarea id="manualInput" placeholder="Enter numbers separated by spaces" rows="1"
+            style="width: 20%;"></textarea>
+        <button onclick="loadFromInput()">Load from Input</button>
+
+        <br><br><br><br>
+
+        <button onclick="displayData()">See Data Values</button>
+        <button onclick="displayStats()">See Data Information</button>
+        <button onclick="displayStdDev()">Standard Deviations</button>
+        <button onclick="findZScore()">Get Z-Score</button>
+
+        <br><br>
+
+        <div id="output"></div>
+
+        <br><br>
+
+        <canvas id="boxPlotCanvas" width="20" height="2"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot"></script>
+
+
+        <br><br>
+
+        <h1 style="font-size: 24px; color: black; text-decoration: underline;">Important Formulas</h1>
+
+        <br><br>
+
+        <h1 style="font-size: 20px; color: black;">Population Standard Deviation: σ = √(Σ(xₖ - μ)² / N)</h1>
+        <h1 style="font-size: 20px; color: black;">xₖ is a value in the population</h1>
+        <h1 style="font-size: 20px; color: black;">μ is the population mean</h1>
+        <h1 style="font-size: 20px; color: black;">N is the number of values</h1>
+
+        <br><br>
+
+        <h1 style="font-size: 20px; color: black;">Sample Standard Deviation: s = √(Σ(xₖ - x̄)² / (n - 1)), where</h1>
+        <h1 style="font-size: 20px; color: black;">xₖ is a sample value</h1>
+        <h1 style="font-size: 20px; color: black;">x̄ is the sample mean</h1>
+        <h1 style="font-size: 20px; color: black;">n is the sample size</h1>
+
+        <br><br>
+
+        <h1 style="font-size: 20px; color: black;">Z-Score: Z = (X - μ) / σ, where</h1>
+        <h1 style="font-size: 20px; color: black;">X is a value in the population</h1>
+        <h1 style="font-size: 20px; color: black;">μ is the population mean</h1>
+        <h1 style="font-size: 20px; color: black;">σ is the population standard deviation</h1>
+
+        <script>
+            let data = [];
+
+            function processData(input) {
+                data = input.split(/\s+/).map(Number).filter(n => !isNaN(n));
+                data.sort((a, b) => a - b);
+                alert("Data loaded successfully!");
+
+                let { Q1, Q2, Q3 } = findQuartiles();
+                let IQR = Q3 - Q1;
+                let lowerBound = Q1 - 1.5 * IQR;
+                let upperBound = Q3 + 1.5 * IQR;
+                let m = findAverage();
+
+                let outliers = data.filter(num => num < lowerBound || num > upperBound);
+
+                let canvas = document.getElementById("boxPlotCanvas");
+                canvas.style.width = "20px";
+                canvas.style.height = "2px";
+
+                let boxPlotData = {
+                    labels: ['Dataset'],
+                    datasets: [{
+                        label: 'Box Plot',
+                        data: [{
+                            min: Math.min(...data),
+                            q1: Q1,
+                            median: Q2,
+                            mean: m,
+                            q3: Q3,
+                            max: Math.max(...data),
+                            outliers: outliers
+                        }],
+                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                        borderColor: 'blue',
+                        borderWidth: 2
+                    }]
+                };
+
+                if (window.boxPlotChart) {
+                    window.boxPlotChart.destroy();
+                }
+
+                let ctx = document.getElementById("boxPlotCanvas").getContext("2d");
+                window.boxPlotChart = new Chart(ctx, {
+                    type: 'boxplot',
+                    data: boxPlotData,
+                    options: {
+                        layout: {
+                            padding: {
+                                left: 500,
+                                right: 500
+                            }
+                        },
+                        responsive: true,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: { display: false }
+                        }
+                    }
+                });
+            }
+
+            function loadFile() {
+                const fileInput = document.getElementById('fileInput').files[0];
+                if (!fileInput) {
+                    alert("Please select a file.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    processData(event.target.result);
+                };
+                reader.readAsText(fileInput);
+            }
+
+            function loadFromInput() {
+                const inputText = document.getElementById('manualInput').value.trim();
+                if (!inputText) {
+                    alert("Please enter data.");
+                    return;
+                }
+                processData(inputText);
+            }
+
+            function displayData() {
+                document.getElementById("output").innerText = "Data Values: " + data.join(", ");
+            }
+
+            function findMin() { return Math.min(...data); }
+            function findMax() { return Math.max(...data); }
+            function findRange() { return findMax() - findMin(); }
+            function findAverage() { return data.reduce((a, b) => a + b, 0) / data.length; }
+
+            function findMode() {
+                let freq = {}, maxFreq = 0, modes = [];
+                data.forEach(num => freq[num] = (freq[num] || 0) + 1);
+                maxFreq = Math.max(...Object.values(freq));
+                for (let num in freq) if (freq[num] === maxFreq) modes.push(num);
+                return maxFreq > 1 ? `Mode: ${modes.join(", ")} (repeated ${maxFreq} times)` : "Mode: none";
+            }
+
+            function displayStats() {
+                let output = `Min: ${findMin()}\nMax: ${findMax()}\nRange: ${findRange()}\n${findMode()}\nAverage: ${findAverage().toFixed(2)}`;
+                document.getElementById("output").innerText = output;
+            }
+
+            function populationStdDev() {
+                let mean = findAverage();
+                return Math.sqrt(data.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / data.length);
+            }
+
+            function sampleStdDev() {
+                let mean = findAverage();
+                return Math.sqrt(data.reduce((sum, num) => sum + Math.pow(num - mean, 2), 0) / (data.length - 1));
+            }
+
+            function displayStdDev() {
+                let output = `Population Standard Deviation: ${populationStdDev().toFixed(2)}\nSample Standard Deviation: ${sampleStdDev().toFixed(2)}`;
+                document.getElementById("output").innerText = output;
+            }
+
+            function findZScore() {
+                let num = parseFloat(prompt("Enter a number from the dataset:"));
+                if (!data.includes(num)) {
+                    alert("Number not in dataset.");
+                    return;
+                }
+                let zScore = (num - findAverage()) / populationStdDev();
+                document.getElementById("output").innerText = `Z-Score of ${num}: ${zScore.toFixed(2)}`;
+            }
+
+            function findMedian(arr) {
+                const mid = Math.floor(arr.length / 2);
+                return arr.length % 2 !== 0 ? arr[mid] : (arr[mid - 1] + arr[mid]) / 2;
+            }
+
+            function findQuartiles() {
+                if (data.length === 0) {
+                    alert("No data available. Please load data first.");
+                    return;
+                }
+
+                let Q2 = findMedian(data); // Median of full data
+                let lowerHalf = data.slice(0, Math.floor(data.length / 2));
+                let upperHalf = data.slice(Math.ceil(data.length / 2));
+
+                let Q1 = findMedian(lowerHalf);
+                let Q3 = findMedian(upperHalf);
+
+                return { Q1, Q2, Q3 };
+            }
+
+        </script>
+</body>
+
+</html>
