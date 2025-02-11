@@ -57,7 +57,7 @@
 
         <br><br>
 
-        <canvas id="boxPlotCanvas" width="10" height="1"></canvas>
+        <canvas id="boxPlotCanvas" width="20" height="2"></canvas>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot"></script>
 
@@ -104,8 +104,8 @@
                 let outliers = data.filter(num => num < lowerBound || num > upperBound);
 
                 let canvas = document.getElementById("boxPlotCanvas");
-                canvas.style.width = "10px";
-                canvas.style.height = "1px";
+                canvas.style.width = "20px";
+                canvas.style.height = "2px";
 
                 let boxPlotData = {
                     labels: ['Dataset'],
@@ -135,10 +135,19 @@
                     type: 'boxplot',
                     data: boxPlotData,
                     options: {
-                        responsive: true, 
+                        layout: {
+                            padding: {
+                                left: 500,
+                                right: 500
+                            }
+                        },
+                        responsive: true,
                         indexAxis: 'y',
                         plugins: {
                             legend: { display: false }
+                        },
+                        scales: {
+                            y: { display: false }
                         }
                     }
                 });
