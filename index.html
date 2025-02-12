@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <title>Stats Helper</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             text-align: center;
         }
 
         #output {
             margin-top: 20px;
+            color: white;
             white-space: pre-line;
         }
 
@@ -21,35 +24,43 @@
             top: 10px;
             left: 10px;
             font-size: 20px;
-            color: black;
+            color: white;
             font-weight: bold;
-            text-decoration: underline;
+        }
+
+        textarea {
+            border: 5px solid #45a29e;
+            border-radius: 5px;
+            padding: 8px;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #1f2833;
         }
     </style>
 </head>
 
 <body>
-    <div class="top-left-text">Sankalp Swamy</div>
-    <h1 style="font-size: 48px; color: blue; text-decoration: underline;">College Statistics Helper
-        <h1 style="font-size: 20px; color: red;">Designed for MATH242 at CSUSM</h1>
-
-        <br><br>
-
-        <input type="file" id="fileInput">
-        <button onclick="loadFile()">Load from file</button>
-
-        <br><br>
-
-        <textarea id="manualInput" placeholder="Enter numbers separated by spaces" rows="1"
-            style="width: 20%;"></textarea>
-        <button onclick="loadFromInput()">Load from Input</button>
+    <div class="bg-black text-white py-4 px-6 text-lg font-bold fixed top-0 left-0 w-full flex items-center justify-between">
+        <span class="ml-4">Sankalp Swamy</span>
+        <span class="absolute left-1/2 transform -translate-x-1/2 text-4xl">College Statistics Helper</span>
+    </div>
+        <h1 style="font-size: 20px; color: white; font-weight: bold;">Designed for MATH242 at CSUSM</h1>
 
         <br><br><br><br>
 
-        <button onclick="displayData()">See Data Values</button>
-        <button onclick="displayStats()">See Data Information</button>
-        <button onclick="displayStdDev()">Standard Deviations</button>
-        <button onclick="findZScore()">Get Z-Score</button>
+        <textarea id="manualInput" placeholder="Enter numbers separated by spaces" rows="1" style="width: 20%;"></textarea>
+            
+        <button style="background-color: #45a29e; color: black;" class="border-2 border-[#66fcf1] px-4 py-1 rounded-md hover:bg-#66fcf1" onclick="loadFromInput()">Load from Input</button>
+
+        <br><br><br><br>
+
+        <button style="background-color: black; color: #45a29e;" class="border-2 border-[#66fcf1] px-4 py-2 rounded-md hover:bg-#66fcf1" onclick="displayData()">See Data Values</button>
+        <button style="background-color: black; color: #45a29e;" class="border-2 border-[#66fcf1] px-4 py-2 rounded-md hover:bg-#66fcf1" onclick="displayStats()">See Data Information</button>
+        <button style="background-color: black; color: #45a29e;" class="border-2 border-[#66fcf1] px-4 py-2 rounded-md hover:bg-#66fcf1" onclick="displayStdDev()">Standard Deviations</button>
+        <button style="background-color: black; color: #45a29e;" class="border-2 border-[#66fcf1] px-4 py-2 rounded-md hover:bg-#66fcf1" onclick="findZScore()">Get Z-Score</button>
 
         <br><br>
 
@@ -64,28 +75,28 @@
 
         <br><br>
 
-        <h1 style="font-size: 24px; color: black; text-decoration: underline;">Important Formulas</h1>
+        <h1 style="font-family: 'Roboto', sans-serif; font-size: 24px; color: #c5c6c7; text-decoration: underline; font-weight: bold;">Important Formulas</h1>
 
         <br><br>
 
-        <h1 style="font-size: 20px; color: black;">Population Standard Deviation: σ = √(Σ(xₖ - μ)² / N)</h1>
-        <h1 style="font-size: 20px; color: black;">xₖ is a value in the population</h1>
-        <h1 style="font-size: 20px; color: black;">μ is the population mean</h1>
-        <h1 style="font-size: 20px; color: black;">N is the number of values</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">Population Standard Deviation: σ = √(Σ(xₖ - μ)² / N)</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">xₖ is a value in the population</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">μ is the population mean</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">N is the number of values</h1>
 
         <br><br>
 
-        <h1 style="font-size: 20px; color: black;">Sample Standard Deviation: s = √(Σ(xₖ - x̄)² / (n - 1)), where</h1>
-        <h1 style="font-size: 20px; color: black;">xₖ is a sample value</h1>
-        <h1 style="font-size: 20px; color: black;">x̄ is the sample mean</h1>
-        <h1 style="font-size: 20px; color: black;">n is the sample size</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">Sample Standard Deviation: s = √(Σ(xₖ - x̄)² / (n - 1)), where</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">xₖ is a sample value</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">x̄ is the sample mean</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">n is the sample size</h1>
 
         <br><br>
 
-        <h1 style="font-size: 20px; color: black;">Z-Score: Z = (X - μ) / σ, where</h1>
-        <h1 style="font-size: 20px; color: black;">X is a value in the population</h1>
-        <h1 style="font-size: 20px; color: black;">μ is the population mean</h1>
-        <h1 style="font-size: 20px; color: black;">σ is the population standard deviation</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">Z-Score: Z = (X - μ) / σ, where</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">X is a value in the population</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">μ is the population mean</h1>
+        <h1 style="font-size: 20px; color: #c5c6c7;">σ is the population standard deviation</h1>
 
         <script>
             let data = [];
@@ -93,7 +104,6 @@
             function processData(input) {
                 data = input.split(/\s+/).map(Number).filter(n => !isNaN(n));
                 data.sort((a, b) => a - b);
-                alert("Data loaded successfully!");
 
                 let { Q1, Q2, Q3 } = findQuartiles();
                 let IQR = Q3 - Q1;
@@ -120,9 +130,9 @@
                             max: Math.max(...data),
                             outliers: outliers
                         }],
-                        backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                        borderColor: 'blue',
-                        borderWidth: 2
+                        backgroundColor: '#def2f1',
+                        borderColor: '#2b7a78',
+                        borderWidth: 3
                     }]
                 };
 
@@ -147,7 +157,8 @@
                             legend: { display: false }
                         },
                         scales: {
-                            y: { display: false }
+                            x: {borderColor: '#45a29e', borderWidth: 5, font: {size: 16, weight: 'bold'}},
+                            y: {borderColor: '#45a29e', borderWidth: 5, display: false }
                         }
                     }
                 });
