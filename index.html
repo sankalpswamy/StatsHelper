@@ -157,8 +157,8 @@
                             legend: { display: false }
                         },
                         scales: {
-                            x: {borderColor: '#45a29e', borderWidth: 5, font: {size: 16, weight: 'bold'}},
-                            y: {borderColor: '#45a29e', borderWidth: 5, display: false }
+                            x: {borderColor: '#45a29e', borderWidth: 5, font: {size: 16, weight: 'bold'}, display: true},
+                            y: {borderColor: '#45a29e', borderWidth: 5, font: {size: 16, weight: 'bold'}, display: false }
                         }
                     }
                 });
@@ -226,8 +226,8 @@
 
             function findZScore() {
                 let num = parseFloat(prompt("Enter a number from the dataset:"));
-                if (!data.includes(num)) {
-                    alert("Number not in dataset.");
+                if (!data.includes(num)) {  
+                    document.getElementById("output").innerText = `Inputted number (${num}) is not in the data set.`;
                     return;
                 }
                 let zScore = (num - findAverage()) / populationStdDev();
