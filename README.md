@@ -5,6 +5,8 @@ The **College Statistics Helper** is a simple web-based tool designed to assist 
 
 This tool was designed specifically for **MATH242 at CSUSM** and is useful for students studying statistics.
 
+The tool can be accessed through this link as well: https://statshelper.vercel.app/
+
 ## Features
 - Load numerical data from a text file or manual input.
 - Display raw data values in sorted order.
